@@ -33,7 +33,6 @@
 
 # Directories
 .vs/
-.vscode/
 bin/
 bin-int/
 
@@ -49,3 +48,4 @@ bin-int/
 
 # Exclude
 !vendor/
+.vscode/settings.json

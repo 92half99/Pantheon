@@ -1,5 +1,4 @@
--- Utopia.lua
-project "UtopiaApp"
+project "Pantheon-Client"
    kind "ConsoleApp"
    language "C++"
    cppdialect "C++20"
@@ -10,16 +9,17 @@ project "UtopiaApp"
 
    includedirs
    {
+      "../Pantheon-Common/Source",
+
       "../Utopia/vendor/imgui",
       "../Utopia/vendor/glfw/include",
       "../Utopia/vendor/glm",
       "../Utopia/vendor/spdlog/include",
-
+      
       "../Utopia/Utopia/Source",
       "../Utopia/Utopia/Platform/GUI",
 
       "%{IncludeDir.VulkanSDK}",
-      "%{IncludeDir.glm}",
 
       -- Utopia-Networking
       "../Utopia/Utopia-Modules/Utopia-Networking/Source",
@@ -28,7 +28,8 @@ project "UtopiaApp"
 
     links
     {
-      "Utopia"
+        "Pantheon-Common",
+        "Utopia"
     }
 
    targetdir ("../bin/" .. outputdir .. "/%{prj.name}")

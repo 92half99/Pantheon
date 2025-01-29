@@ -38,6 +38,7 @@ project "Pantheon-Client"
    filter "system:windows"
       systemversion "latest"
       defines { "UT_PLATFORM_WINDOWS" }
+      defines { "GLM_ENABLE_EXPERIMENTAL" }
       buildoptions { "/utf-8" }
 
       postbuildcommands 

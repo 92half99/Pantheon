@@ -29,6 +29,8 @@ namespace Pantheon {
 		s_ScratchBuffer.Allocate(10 * 1024 * 1024); // 10 MB
 
 		m_Client.SetDataReceivedCallback([this](const Utopia::Buffer buffer) { OnDataReceived(buffer); });
+	
+		m_Renderer.Init();
 	}
 
 	void ClientLayer::OnDetach()
@@ -74,6 +76,29 @@ namespace Pantheon {
 
 	}
 
+	void ClientLayer::OnRender()
+	{
+		Utopia::Client::ConnectionStatus connectionStatus = m_Client.GetConnectionStatus();
+		if (connectionStatus == Utopia::Client::ConnectionStatus::Connected)
+		{
+			// play game
+			m_Renderer.RenderCube(glm::vec3(m_PlayerPosition.x, 0.5f, m_PlayerPosition.y));
+
+			m_PlayerDataMutex.lock();
+			std::map<uint32_t, PlayerData> playerData = m_PlayerData;
+			m_PlayerDataMutex.unlock();
+
+			for (const auto& [id, data] : playerData)
+			{
+				if (id == m_PlayerID)
+					continue;
+
+				m_Renderer.RenderCube(glm::vec3(data.Position.x, 0.5f, data.Position.y));
+			}
+		}
+
+	}
+
 	void ClientLayer::OnUIRender()
 	{
 		Utopia::Client::ConnectionStatus connectionStatus = m_Client.GetConnectionStatus();
@@ -113,6 +138,7 @@ namespace Pantheon {
 
 		ImGui::ShowDemoWindow();
 
+		m_Renderer.RenderUI();
 	}
 
 	void ClientLayer::OnDataReceived(const Utopia::Buffer buffer)
